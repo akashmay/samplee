@@ -26,7 +26,10 @@ pipeline {
                             python -m venv venv &&
                             source venv/bin/activate &&
                             pip install --upgrade pip &&
-                            pip install -r requirements.txt &&
+			    pip install pytest &&
+			    pip install pytest-html
+
+                            //pip install -r requirements.txt &&
                             pytest tests --html=reports/report.html
                         "
                     '''
