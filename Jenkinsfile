@@ -20,10 +20,15 @@ pipeline {
                     // Run the Python test container, execute tests, and remove the container after execution
                     sh '''
                         docker run --rm --name python-tests-container \
-                        -v ${WORKSPACE}/reports:/app/reports \
-                        -v ${WORKSPACE}/tests:/app/tests \
-                        python:3.9 \
-                        pytest /app/tests --html=/app/reports/report.html
+                        -v ${WORKSPACE}:/app \
+                        -w /app \
+                        python:3.9 bash -c "
+                            python -m venv venv &&
+                            source venv/bin/activate &&
+                            pip install --upgrade pip &&
+                            pip install -r requirements.txt &&
+                            pytest tests --html=reports/report.html
+                        "
                     '''
                 }
             }
